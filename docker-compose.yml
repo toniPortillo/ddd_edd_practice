@@ -5,12 +5,10 @@ services:
     build:
       context: .
       dockerfile: deploy/api/docker/Dockerfile
-      args:
-        development: "True"
     volumes:
         - ./:/srv/
     ports:
-      - "5000:5000"
+      - "5000:${DDD_EDD_PRACTICE_API_PORT}"
     container_name: ddd_edd_practice-api
     restart: on-failure
     env_file:

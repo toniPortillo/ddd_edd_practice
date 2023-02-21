@@ -7,12 +7,12 @@ ENV PYTHONPATH "${PYTHONPATH}:/srv:/srv/src"
 
 COPY . /srv/
 
-WORKDIR /srv/deploy/api/docker
-
 WORKDIR /srv
 
-RUN pip install pipenv
+RUN pip install pipenv \
+    && pipenv lock \
+    && pipenv install --system --deploy
 
 EXPOSE ${DDD_EDD_PRACTICE_API_PORT}
 
-CMD ["uvicorn", "srv.main:app", "--host:0.0.0.0", "--port=5000"]
+CMD ["uvicorn", "app.ddd_edd_practice_app:app", "--host=0.0.0.0", "--port=5000"]
