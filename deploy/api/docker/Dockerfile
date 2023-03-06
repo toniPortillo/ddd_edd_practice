@@ -11,7 +11,11 @@ WORKDIR /srv
 
 RUN pip install pipenv \
     && pipenv lock \
-    && pipenv install --system --deploy
+    && pipenv install --system --deploy \
+    && adduser -u 1000 --gecos "" --disabled-password deng \
+    && mkdir /venv \
+    && chown -R deng:deng /venv \
+    && chown -R deng:deng /srv
 
 EXPOSE ${DDD_EDD_PRACTICE_API_PORT}
 

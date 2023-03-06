@@ -9,7 +9,21 @@ services:
         - ./:/srv/
     ports:
       - "5000:${DDD_EDD_PRACTICE_API_PORT}"
-    container_name: ddd_edd_practice-api
+    container_name: "ddd_edd_practice-api"
     restart: on-failure
+    depends_on:
+      - db
     env_file:
       - .env
+  db:
+    image: postgres:11.6
+    container_name: "ddd_edd_practice-db"
+    environment:
+      - POSTGRES_USER=${DDD_EDD_PRACTICE_DB_USER}
+      - POSTGRES_PASSWORD=${DDD_EDD_PRACTICE_DB_PASSWORD}
+      - POSTGRES_DB=${DDD_EDD_PRACTICE_DB_NAME}
+    ports:
+      - "54320:${DDD_EDD_PRACTICE_DB_PORT}"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./deploy/local_db:/docker-entrypoint-initdb.d

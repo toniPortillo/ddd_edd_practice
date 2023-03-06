@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Union
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
