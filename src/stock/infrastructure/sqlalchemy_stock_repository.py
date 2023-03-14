@@ -23,4 +23,4 @@ class SqlalchemyStockRepository(StockRepository):
         self, 
         stock: Stock
     ) -> None:
-        pass
+        self.__db_instance.stock.merge(stock)

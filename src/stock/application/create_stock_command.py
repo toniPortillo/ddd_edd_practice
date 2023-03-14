@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 
 
-@dataclass
-class Stock:
-    stock_id: int
+@dataclass(frozen=True)
+class CreateStockCommand:
     symbol: str
     name: str
     currency: str
