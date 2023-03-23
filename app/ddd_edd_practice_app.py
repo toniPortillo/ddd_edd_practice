@@ -19,8 +19,7 @@ tags_metadata: List[Dict[str, Any]] = [
 
 async def on_start_up() -> None:
     SingletonAiohttp.get_aiohttp_client()
-    application = ApplicationContainer()
-    application.wire(modules=[__name__])
+
 
 async def on_shutdown() -> None:
     await SingletonAiohttp.close_aiohttp_client()
@@ -33,5 +32,7 @@ app = FastAPI(
     on_startup=[on_start_up],
     on_shutdown=[on_shutdown],
 )
+container = ApplicationContainer()
 
+app.container = container
 app.include_router(api_router, prefix=API_V)

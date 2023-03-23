@@ -1,0 +1,2 @@
+database:
+  dsn: "postgresql://ddd_edd_practice:ddd_edd_practicepassword@localhost/ddd_edd_practice_db"

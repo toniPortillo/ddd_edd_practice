@@ -15,7 +15,7 @@ class CreateStockCommandHandler:
         self.__stock_repository = stock_repository
         self.__stock_creator = stock_creator
 
-    def handle(
+    async def handle(
         self,
         command: CreateStockCommand,
     ) -> Dict:
