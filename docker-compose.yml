@@ -15,8 +15,12 @@ services:
       - db
     env_file:
       - .env
+    networks:
+      - ddd_edd_practice-network
+
   db:
     image: postgres:11.6
+    restart: always
     container_name: "ddd_edd_practice-db"
     environment:
       - POSTGRES_USER=${DDD_EDD_PRACTICE_DB_USER}
@@ -25,5 +29,11 @@ services:
     ports:
       - "54320:${DDD_EDD_PRACTICE_DB_PORT}"
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
       - ./deploy/local_db:/docker-entrypoint-initdb.d
+    networks:
+      - ddd_edd_practice-network
+
+networks:
+  ddd_edd_practice-network:
+    driver: bridge

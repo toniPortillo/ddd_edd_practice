@@ -5,31 +5,19 @@ from sqlalchemy.orm import sessionmaker
 from src.stock.infrastructure.sqlalchemy_stock_repository import SqlalchemyStockRepository
 from src.stock.domain.stock_creator import StockCreator
 from src.stock.application.create_stock_command_handler import CreateStockCommandHandler
+from app.config.database_initializer import DatabaseInitializer
+from app.config.database import Database
 
 
 class ApplicationContainer(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(modules=["src.stock.infrastructure.api.controller.stock_endpoints"])
     config = providers.Configuration(yaml_files=['config.yml'])
-    print(config.database.dsn)
-    engine = providers.Singleton(
-        create_engine,
-        config.database.dsn,
-    )
 
-    session = providers.Singleton(
-        sessionmaker,
-        autocommit=False,
-        autoflush=False,
-        bind=engine,
-    )
-
-    Base = providers.Singleton(
-        declarative_base
-    )
-
+    db = providers.Singleton(Database, db_url=config.database.dsn)
+    
     stock_repository = providers.Factory(
         SqlalchemyStockRepository,
-        db_instance=session,
+        db_instance=db.provided.session,
     )
 
     stock_creator = providers.Factory(

@@ -1,30 +1,30 @@
-from typing import Type, Dict
+from typing import Type
 
 from src.stock.domain.stock import Stock
 from src.common.mapper import Mapper
 from sqlalchemy import Table, Column, String
 from sqlalchemy.dialects.postgresql import UUID
+from app.config.database import Base
 
 
-class StockMapper(Mapper):
-    __table = None
+class StockMapper(Base):
+    __tablename__ = "stock_stock"
 
-    def table(
-        self,
-    ) -> Table:
-        if self.__table is None:
-            self.__table = self.__db_instance.Table(
-                "stock_stock",
-                Column("id", UUID(as_uuid=False), primary_key=True),
-                Column("symbol", String()),
-                Column("name", String(), nullable=False),
-                Column("currency", String()),
-                Column("exchange", String()),
-                Column("mic_code", String()),
-                Column("country", String()),
-                Column("type", String()),
-            )
-        return self.__table
+    id = Column(UUID(as_uuid=False), primary_key=True)
+    symbol = Column(String())
+    name = Column(String(), nullable=False)
+    currency = Column(String())
+    exchange = Column(String())
+    mic_code = Column(String())
+    country = Column(String())
+    type = Column(String())
 
-    def entity(self) -> Type:
-        return Stock
+    def __repr__(self):
+        return f"<Stock(id={self.id}, "\
+            f"symbol={self.symbol}, "\
+            f"name={self.name}, "\
+            f"currency={self.currency}, "\
+            f"exchange={self.exchange}, "\
+            f"mic_code={self.mic_code}, "\
+            f"country={self.country}, "\
+            f"type={self.type})>"
