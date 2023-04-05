@@ -18,10 +18,10 @@ tags_metadata: List[Dict[str, Any]] = [
 
 
 container = ApplicationContainer()
-db = container.db()
-db.create_database()
 async def on_start_up() -> None:
     SingletonAiohttp.get_aiohttp_client()
+    db = container.db()
+    db.create_database()
 
 
 async def on_shutdown() -> None:

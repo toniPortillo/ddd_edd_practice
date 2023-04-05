@@ -12,6 +12,7 @@ dependency-injector = "==4.41.0"
 SQLAlchemy = "==2.0.4"
 PyYAML = "==6.0"
 psycopg2-binary = "==2.9.5"
+alembic = "==1.10.2"
 
 [requires]
 python_version = "3.8"
