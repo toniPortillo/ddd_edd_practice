@@ -8,22 +8,13 @@ from src.stock.infrastructure.stock_mapper import StockMapper
 
 
 class SqlalchemyStockRepository(StockRepository):
-    def __init__(
-        self,
-        db_instance: Session
-    ) -> None:
+    def __init__(self, db_instance: Session) -> None:
         self.__db_instance = db_instance
 
-    def find_by_id(
-        self, 
-        id: int
-    ) -> Optional[Stock]:
+    def find_by_id(self, id: int) -> Optional[Stock]:
         pass
 
-    def save(
-        self, 
-        stock: Stock
-    ) -> None:
+    def save(self, stock: Stock) -> None:
         stock_mapper: StockMapper = StockMapper(
             id=stock.stock_id,
             symbol=stock.symbol,

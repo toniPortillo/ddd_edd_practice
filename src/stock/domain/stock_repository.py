@@ -3,6 +3,7 @@ from typing import Optional
 
 from src.stock.domain.stock import Stock
 
+
 class StockRepository(ABC):
     @abstractmethod
     def find_by_id(self, id: int) -> Optional[Stock]:

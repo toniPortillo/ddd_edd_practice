@@ -4,16 +4,9 @@ from src.stock.domain.stock import Stock
 
 class StockCreator:
     @classmethod
-    def create(self,
-        symbol: str,
-        name: str,
-        currency: str,
-        exchange: str,
-        mic_code: str,
-        country: str,
-        type: str,
+    def create(
+        self, symbol: str, name: str, currency: str, exchange: str, mic_code: str, country: str, type: str
     ) -> Stock:
-        
         stock: Stock = Stock(
             stock_id=uuid4(),
             symbol=symbol,

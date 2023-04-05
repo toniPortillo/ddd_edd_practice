@@ -1,8 +1,4 @@
-from typing import Type
-
-from src.stock.domain.stock import Stock
-from src.common.mapper import Mapper
-from sqlalchemy import Table, Column, String
+from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID
 from app.config.database import Base
 
@@ -20,11 +16,13 @@ class StockMapper(Base):
     type = Column(String())
 
     def __repr__(self):
-        return f"<Stock(id={self.id}, "\
-            f"symbol={self.symbol}, "\
-            f"name={self.name}, "\
-            f"currency={self.currency}, "\
-            f"exchange={self.exchange}, "\
-            f"mic_code={self.mic_code}, "\
-            f"country={self.country}, "\
+        return (
+            f"<Stock(id={self.id}, "
+            f"symbol={self.symbol}, "
+            f"name={self.name}, "
+            f"currency={self.currency}, "
+            f"exchange={self.exchange}, "
+            f"mic_code={self.mic_code}, "
+            f"country={self.country}, "
             f"type={self.type})>"
+        )

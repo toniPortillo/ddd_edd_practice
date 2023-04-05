@@ -16,6 +16,7 @@ from src.stock.application.create_stock_command import CreateStockCommand
 
 router = APIRouter()
 
+
 @router.post(
     "",
     status_code=201,
@@ -25,10 +26,7 @@ router = APIRouter()
 @inject
 async def create_stock(
     create_stock_dto: CreateStockDto,
-    create_stock_command_handler = Depends(Provide[
-            ApplicationContainer.create_stock_command_handler
-        ]
-    ),
+    create_stock_command_handler=Depends(Provide[ApplicationContainer.create_stock_command_handler]),
 ) -> Union[CreateStockResponseDto, JSONResponse]:
     try:
         create_stock_command: CreateStockCommand = CreateStockCommand(
@@ -41,9 +39,7 @@ async def create_stock(
             type=create_stock_dto.type,
         )
         print(create_stock_command_handler)
-        await create_stock_command_handler.handle(
-            create_stock_command
-        )
+        await create_stock_command_handler.handle(create_stock_command)
         return CreateStockResponseDto(
             stock_id="123",
             response="Stock created",
