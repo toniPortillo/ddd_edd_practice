@@ -7,7 +7,7 @@ Create Date: 2023-04-05 12:45:03.189585
 """
 from alembic import op
 import sqlalchemy as sa
-
+import uuid
 
 # revision identifiers, used by Alembic.
 revision = 'b1b2461786f6'
@@ -19,16 +19,17 @@ depends_on = None
 def upgrade() -> None:
     op.create_table(
         'stock_stock',
-        sa.Column("id", sa.String(), nullable=False),
+        sa.Column("id", sa.dialects.postgresql.UUID(as_uuid=True), nullable=False, default=uuid.uuid4),
         sa.Column("symbol", sa.String(),),
         sa.Column("name", sa.String(), nullable=False),
         sa.Column("currency", sa.String()),
         sa.Column("exchange", sa.String()),
         sa.Column("mic_code", sa.String()),
+        sa.Column("country", sa.String()),
         sa.Column("type", sa.String()),
         sa.PrimaryKeyConstraint("id"),
     )
 
 
 def downgrade() -> None:
-    op.drop_table("stocks")
+    op.drop_table("stock_stock")
