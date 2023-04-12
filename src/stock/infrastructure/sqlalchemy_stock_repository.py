@@ -1,4 +1,5 @@
-from typing import Optional
+from contextlib import AbstractContextManager
+from typing import Optional, TypeVar, Callable
 
 from src.stock.domain.stock import Stock
 from src.stock.domain.stock_repository import StockRepository
@@ -6,9 +7,11 @@ from src.stock.domain.stock_repository import StockRepository
 from sqlalchemy.orm import Session
 from src.stock.infrastructure.stock_mapper import StockMapper
 
+T = TypeVar("T")
+
 
 class SqlalchemyStockRepository(StockRepository):
-    def __init__(self, db_instance: Session) -> None:
+    def __init__(self, db_instance: Callable[..., AbstractContextManager[Session]]) -> None:
         self.__db_instance = db_instance
 
     def find_by_id(self, id: int) -> Optional[Stock]:

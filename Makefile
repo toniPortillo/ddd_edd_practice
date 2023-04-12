@@ -13,3 +13,8 @@ black: ## Run black checks
 	@echo 'Running black ...'
 	@docker-compose run --rm api pipenv run tox -e black
 	@echo 'Black run finished'
+
+mypy: ## Run mypy checks
+	@echo 'Running mypy ...'
+	@docker-compose run --rm api pipenv run tox -e mypy
+	@echo 'Mypy run finished'

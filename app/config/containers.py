@@ -1,11 +1,12 @@
+from contextlib import AbstractContextManager
+from typing import Callable
 from dependency_injector import containers, providers
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+
+from sqlalchemy.orm import Session
 from src.stock.infrastructure.sqlalchemy_stock_repository import SqlalchemyStockRepository
 from src.stock.domain.stock_creator import StockCreator
 from src.stock.application.create_stock_command_handler import CreateStockCommandHandler
-from app.config.database_initializer import DatabaseInitializer
+
 from app.config.database import Database
 
 

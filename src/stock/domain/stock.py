@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+import uuid
 
 
 @dataclass
 class Stock:
-    stock_id: int
+    stock_id: uuid.UUID
     symbol: str
     name: str
     currency: str

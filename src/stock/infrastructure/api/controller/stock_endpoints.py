@@ -12,7 +12,7 @@ from app.config.containers import ApplicationContainer
 from src.stock.application.create_stock_dto import CreateStockDto
 from src.stock.application.create_stock_response_dto import CreateStockResponseDto
 from src.stock.application.create_stock_command import CreateStockCommand
-
+from src.stock.application.create_stock_command_handler import CreateStockCommandHandler
 
 router = APIRouter()
 
@@ -26,7 +26,9 @@ router = APIRouter()
 @inject
 async def create_stock(
     create_stock_dto: CreateStockDto,
-    create_stock_command_handler=Depends(Provide[ApplicationContainer.create_stock_command_handler]),
+    create_stock_command_handler: CreateStockCommandHandler = Depends(
+        Provide[ApplicationContainer.create_stock_command_handler]
+    ),
 ) -> Union[CreateStockResponseDto, JSONResponse]:
     try:
         create_stock_command: CreateStockCommand = CreateStockCommand(
@@ -41,7 +43,7 @@ async def create_stock(
         print(create_stock_command_handler)
         await create_stock_command_handler.handle(create_stock_command)
         return CreateStockResponseDto(
-            stock_id="123",
+            stock_id=123,
             response="Stock created",
         )
     except ApplicationException:

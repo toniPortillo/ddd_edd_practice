@@ -15,7 +15,7 @@ class StockMapper(Base):
     country = Column(String())
     type = Column(String())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"<Stock(id={self.id}, "
             f"symbol={self.symbol}, "
