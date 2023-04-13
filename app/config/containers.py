@@ -1,8 +1,10 @@
 from dependency_injector import containers, providers
+from src.common.infrastructure.client.requests_http_client import RequestsHttpClient
 
 from src.stock.infrastructure.sqlalchemy_stock_repository import SqlalchemyStockRepository
 from src.stock.domain.stock_creator import StockCreator
 from src.stock.application.create_stock_command_handler import CreateStockCommandHandler
+from src.common.infrastructure.client.requests_session import RequestsSession
 
 from app.config.database import Database
 
@@ -22,8 +24,19 @@ class ApplicationContainer(containers.DeclarativeContainer):
         StockCreator,
     )
 
+    session_requests = providers.Singleton(
+        RequestsSession,
+    )
+
+    requests_http_client = providers.Factory(
+        RequestsHttpClient,
+        session_requests=session_requests,
+        url=config.api.url,
+    )
+
     create_stock_command_handler = providers.Factory(
         CreateStockCommandHandler,
         stock_repository=stock_repository,
         stock_creator=stock_creator,
+        requests_http_client=requests_http_client,
     )

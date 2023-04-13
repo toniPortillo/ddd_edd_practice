@@ -13,7 +13,7 @@ class RequestsHttpClient(HttpClient):
         session_requests: RequestsSession,
         url: str,
     ) -> None:
-        self.session_requests = RequestsSession
+        self.session_requests = session_requests
         self.url = url
 
     def get(
@@ -25,7 +25,9 @@ class RequestsHttpClient(HttpClient):
         language: Optional[str] = None,
     ) -> Response:
         headers = self.__set_headers(headers, access_token_value, language)
-        return self.session_request(url=self.url + path, method="get", headers=headers, timeout=timeout)
+        return self.session_requests.session_requests(
+            url=self.url + path, method="get", headers=headers, timeout=timeout, retry_policy=None
+        )
 
     def __set_headers(
         self,

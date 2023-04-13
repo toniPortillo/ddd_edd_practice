@@ -1,2 +1,5 @@
 database:
   dsn: "postgresql+psycopg2://ddd_edd_practice:ddd_edd_practicepassword@db:5432/ddd_edd_practice_db"
+
+api:
+  url: "https://api.twelvedata.com"
