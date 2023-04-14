@@ -8,7 +8,8 @@ from dependency_injector.wiring import Provide, inject
 from app.config.error_handlers.application_exception import (
     ApplicationException,
 )
-from app.config.containers import ApplicationContainer
+
+from src.stock._dependency_injector.infrastructure.api.controller.stock_endpoints import StockEndpointsContainer
 from src.stock.application.create_stock_dto import CreateStockDto
 from src.stock.application.create_stock_response_dto import CreateStockResponseDto
 from src.stock.application.create_stock_command import CreateStockCommand
@@ -27,7 +28,7 @@ router = APIRouter()
 async def create_stock(
     create_stock_dto: CreateStockDto,
     create_stock_command_handler: CreateStockCommandHandler = Depends(
-        Provide[ApplicationContainer.create_stock_command_handler]
+        Provide[StockEndpointsContainer.create_stock_command_handler]
     ),
 ) -> Union[CreateStockResponseDto, JSONResponse]:
     try:

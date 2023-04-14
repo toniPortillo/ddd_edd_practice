@@ -5,7 +5,7 @@ from fastapi import FastAPI
 
 from app.config.singleton_aiohttp import SingletonAiohttp
 from app.config.api.api_v1.api import api_router
-from app.config.containers import ApplicationContainer
+from app.config.container_subscriber import container_subscriber
 
 
 API_V: Final[str] = f"{os.getenv('SUB_PATH', '')}/api/v1"
@@ -17,10 +17,9 @@ tags_metadata: List[Dict[str, Any]] = [
 ]
 
 
-container = ApplicationContainer()
 async def on_start_up() -> None:
     SingletonAiohttp.get_aiohttp_client()
-    db = container.db()
+    db = container_subscriber[0].db()
     db.create_database()
 
 
@@ -35,5 +34,5 @@ app = FastAPI(
     on_startup=[on_start_up],
     on_shutdown=[on_shutdown],
 )
-app.container = container
+app.container = container_subscriber
 app.include_router(api_router, prefix=API_V)
