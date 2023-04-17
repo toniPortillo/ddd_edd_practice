@@ -1,9 +1,10 @@
-from typing import Dict
-from src.stock.domain.stock import Stock
-from src.stock.domain.stock_creator import StockCreator
+from typing import Any, Dict
+from stock.domain.stock import Stock
+from stock.domain.stock_creator import StockCreator
 
-from src.stock.infrastructure.sqlalchemy_stock_repository import SqlalchemyStockRepository
-from src.stock.application.create_stock_command import CreateStockCommand
+from stock.infrastructure.sqlalchemy_stock_repository import SqlalchemyStockRepository
+from stock.application.create_stock_command import CreateStockCommand
+from common.infrastructure.client.requests_http_client import RequestsHttpClient
 
 
 class CreateStockCommandHandler:
@@ -11,9 +12,11 @@ class CreateStockCommandHandler:
         self,
         stock_repository: SqlalchemyStockRepository,
         stock_creator: StockCreator,
+        requests_http_client: RequestsHttpClient,
     ) -> None:
         self.__stock_repository = stock_repository
         self.__stock_creator = stock_creator
+        self.__requests_http_client = requests_http_client
 
     async def handle(
         self,
@@ -28,6 +31,9 @@ class CreateStockCommandHandler:
             country=command.country,
             type=command.type,
         )
+
+        stock_list: Any = self.__requests_http_client.get("/stocks")
+        print(stock_list.json())
 
         self.__stock_repository.save(stock)
 
