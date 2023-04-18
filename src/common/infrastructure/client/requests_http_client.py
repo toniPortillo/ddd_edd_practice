@@ -16,7 +16,7 @@ class RequestsHttpClient(HttpClient):
         self.session_requests = session_requests
         self.url = url
 
-    def get(
+    async def get(
         self,
         path: str,
         headers: Optional[Dict] = None,
@@ -24,12 +24,12 @@ class RequestsHttpClient(HttpClient):
         access_token_value: Optional[str] = None,
         language: Optional[str] = None,
     ) -> Response:
-        headers = self.__set_headers(headers, access_token_value, language)
+        headers = await self.__set_headers(headers, access_token_value, language)
         return self.session_requests.session_requests(
             url=self.url + path, method="get", headers=headers, timeout=timeout, retry_policy=None
         )
 
-    def __set_headers(
+    async def __set_headers(
         self,
         headers: Optional[Dict],
         access_token_value: Optional[str],
