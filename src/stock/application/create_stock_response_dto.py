@@ -2,5 +2,5 @@ from pydantic import BaseModel
 
 
 class CreateStockResponseDto(BaseModel):
-    stock_id: int
-    response: str
+    stocks_from_api: int
+    saved_stocks: int
