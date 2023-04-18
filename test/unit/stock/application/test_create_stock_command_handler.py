@@ -1,5 +1,7 @@
+import jsonschema
+import pytest
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, AsyncMock
 
 from stock.application.create_stock_command_handler import CreateStockCommandHandler
 from stock.infrastructure.sqlalchemy_stock_repository import SqlalchemyStockRepository
@@ -10,10 +12,10 @@ from common.infrastructure.client.requests_http_client import RequestsHttpClient
 
 class TestCreateStockCommandHandler(TestCase):
     def setUp(self) -> None:
-        self.stock_repository_mock = Mock(SqlalchemyStockRepository)
+        self.stock_repository_mock = AsyncMock(SqlalchemyStockRepository)
         self.stock_creator_mock = StockCreator()
-        self.requests_http_client_mock = Mock(RequestsHttpClient)
-        self.stock_json_schema_validator_mock = Mock(StockJsonSchemaValidator)
+        self.requests_http_client_mock = AsyncMock(RequestsHttpClient)
+        self.stock_json_schema_validator_mock = AsyncMock(StockJsonSchemaValidator)
         self.command_handler = CreateStockCommandHandler(
             stock_repository=self.stock_repository_mock,
             stock_creator=self.stock_creator_mock,
@@ -21,7 +23,7 @@ class TestCreateStockCommandHandler(TestCase):
             stock_json_schema_validator=self.stock_json_schema_validator_mock,
         )
 
-    async def test_handle(self):
+    async def test_handle(self) -> None:
         
         response_data = {
             "data": [
@@ -63,3 +65,47 @@ class TestCreateStockCommandHandler(TestCase):
         self.stock_repository_mock.save_many.return_value = 2
         result = await self.command_handler.handle()
         assert result == {"stocks_from_api": 2, "saved_stocks": 2}
+
+    async def test_handle_with_empty_response(self) -> None:
+        response_data = {
+            "data": [],
+            "status": "ok"
+        }
+
+        mock_response = Mock()
+        mock_response.json.return_value = response_data
+        self.requests_http_client_mock.get.return_value = mock_response
+        self.stock_json_schema_validator_mock.validate.return_value = None
+        self.stock_repository_mock.save_many.return_value = 0
+        result = await self.command_handler.handle()
+        assert result == {"stocks_from_api": 0, "saved_stocks": 0}
+
+    async def test_handle_with_invalid_response(self) -> None:
+        response_data = {
+            "data": [],
+            "status": "error"
+        }
+
+        mock_response = Mock()
+        mock_response.json.return_value = response_data
+        self.requests_http_client_mock.get.return_value = mock_response
+        self.stock_json_schema_validator_mock.validate.return_value = None
+        self.stock_repository_mock.save_many.return_value = 0
+        result = await self.command_handler.handle()
+        assert result == {"stocks_from_api": 0, "saved_stocks": 0}
+
+    async def test_handle_with_invalid_json_schema(self) -> None:
+        response_data = {
+            "content": [],
+            "status": "ok"
+        }
+
+        mock_response = Mock()
+        mock_response.json.return_value = response_data
+        self.requests_http_client_mock.get.return_value = mock_response
+        self.stock_json_schema_validator_mock.validate.side_effect = jsonschema.exceptions.\
+            ValidationError("The json schema is not valid")
+
+        with pytest.raises(jsonschema.exceptions.ValidationError) as exception_info:
+            await self.command_handler.handle()
+            assert exception_info == "The json schema is not valid"
