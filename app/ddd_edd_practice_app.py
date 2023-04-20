@@ -18,13 +18,12 @@ tags_metadata: List[Dict[str, Any]] = [
 
 
 async def on_start_up() -> None:
-    SingletonAiohttp.get_aiohttp_client()
     db = container_subscriber[0].db()
     db.create_database()
 
 
 async def on_shutdown() -> None:
-    await SingletonAiohttp.close_aiohttp_client()
+    pass
 
 
 app = FastAPI(
