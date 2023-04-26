@@ -23,6 +23,7 @@ class TestCreateStockCommandHandler(TestCase):
             stock_json_schema_validator=self.stock_json_schema_validator_mock,
         )
 
+    @pytest.mark.asyncio
     async def test_handle(self) -> None:
         
         response_data = {
@@ -66,6 +67,7 @@ class TestCreateStockCommandHandler(TestCase):
         result = await self.command_handler.handle()
         assert result == {"stocks_from_api": 2, "saved_stocks": 2}
 
+    @pytest.mark.asyncio
     async def test_handle_with_empty_response(self) -> None:
         response_data = {
             "data": [],
@@ -80,6 +82,7 @@ class TestCreateStockCommandHandler(TestCase):
         result = await self.command_handler.handle()
         assert result == {"stocks_from_api": 0, "saved_stocks": 0}
 
+    @pytest.mark.asyncio
     async def test_handle_with_invalid_response(self) -> None:
         response_data = {
             "data": [],
@@ -94,6 +97,7 @@ class TestCreateStockCommandHandler(TestCase):
         result = await self.command_handler.handle()
         assert result == {"stocks_from_api": 0, "saved_stocks": 0}
 
+    @pytest.mark.asyncio
     async def test_handle_with_invalid_json_schema(self) -> None:
         response_data = {
             "content": [],
