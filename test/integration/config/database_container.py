@@ -9,9 +9,9 @@ class DatabaseContainer(containers.DeclarativeContainer):
     postgres_user: str = os.environ.get("DDD_EDD_PRACTICE_DB_USER")
     postgres_password: str = os.environ.get("DDD_EDD_PRACTICE_DB_PASSWORD")
     postgres_db_name: str = os.environ.get("TEST_DATABASE_NAME")
-    postgres_db_port: str = os.environ.get("DDD_EDD_PRACTICE_DB_PORT")
+    postgres_port: str = os.environ.get("DDD_EDD_PRACTICE_DB_PORT")
 
-    db_url: str = f"postgresql+psycopg2://{postgres_user}:{postgres_password}@db:{postgres_db_port}/{postgres_db_name}"
+    db_url: str = f"postgresql+psycopg2://{postgres_user}:{postgres_password}@db:{postgres_port}/{postgres_db_name}"
     
     db = providers.Singleton(
         Database, 

@@ -38,3 +38,23 @@ integration_test_coverage: ## Run coverage
 	@echo 'Running coverage ...'
 	@docker-compose run --rm api pipenv run tox -e integration_coverage
 	@echo 'Coverage run finished'
+
+migration_upgrade: ## Run migration upgrade
+	@echo 'Running migration upgrade ...'
+	@docker-compose run --rm api pipenv run alembic -c /srv/app/migrations/alembic.ini upgrade head
+	@echo 'Migration upgrade finished'
+
+migration_downgrade: ## Run migration downgrade
+	@echo 'Running migration downgrade'
+	@docker-compose run --rm api pipenv run alembic downgrade -1
+	@echo 'Migration downgrade finished'
+
+migration_test_db_upgrade: ## Run migration upgrade
+	@echo 'Running migration upgrade ...'
+	@docker-compose run --rm api pipenv run alembic -c /srv/app/migrations/alembic_test_db.ini upgrade head
+	@echo 'Migration upgrade finished'
+
+migration_test_db_downgrade: ## Run migration downgrade
+	@echo 'Running migration downgrade'
+	@docker-compose run --rm api pipenv run alembic -c /srv/app/migrations/alembic_test_db.ini downgrade -1
+	@echo 'Migration downgrade finished'
