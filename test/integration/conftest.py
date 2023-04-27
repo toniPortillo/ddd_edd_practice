@@ -26,6 +26,11 @@ def test_client(fastapi_app):
     client = TestClient(fastapi_app)
     yield client
 
+@pytest.fixture(scope="class", autouse=True)
+def test_class_utils(request, fastapi_app, test_client):
+    request.cls.fastapi_app = fastapi_app
+    request.cls.test_client = test_client
+
 @pytest.fixture(scope="session", autouse=True)
 def create_isolated_db(database_instance):
     database_instance.create_database()
