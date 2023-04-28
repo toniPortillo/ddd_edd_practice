@@ -3,13 +3,33 @@ from typing import List, Optional, Callable, ContextManager
 from src.stock.domain.stock import Stock
 from src.stock.domain.stock_repository import StockRepository
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, Query
 from src.stock.infrastructure.stock_mapper import StockMapper
 
 
 class SqlalchemyStockRepository(StockRepository):
     def __init__(self, db_instance: Callable[..., ContextManager[Session]]) -> None:
         self.__db_instance = db_instance
+
+    async def find_all(self) -> List[Stock]:
+        with self.__db_instance() as session:
+            query: Query = session.query(StockMapper)
+            db_stocks: List[StockMapper] = query.all()
+            stocks: List[Stock] = []
+            for db_stock in db_stocks:
+                stocks.append(
+                    Stock(
+                        stock_id=db_stock.id,
+                        symbol=db_stock.symbol,
+                        name=db_stock.name,
+                        currency=db_stock.currency,
+                        exchange=db_stock.exchange,
+                        mic_code=db_stock.mic_code,
+                        country=db_stock.country,
+                        type=db_stock.type,
+                    )
+                )
+        return stocks
 
     async def find_by_id(self, id: int) -> Optional[Stock]:
         pass
