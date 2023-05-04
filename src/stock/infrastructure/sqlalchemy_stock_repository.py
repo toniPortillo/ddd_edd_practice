@@ -1,9 +1,10 @@
+import uuid
 from typing import List, Optional, Callable, ContextManager
 
 from src.stock.domain.stock import Stock
 from src.stock.domain.stock_repository import StockRepository
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, Query
 from src.stock.infrastructure.stock_mapper import StockMapper
 
 
@@ -11,19 +12,39 @@ class SqlalchemyStockRepository(StockRepository):
     def __init__(self, db_instance: Callable[..., ContextManager[Session]]) -> None:
         self.__db_instance = db_instance
 
+    async def find_all(self) -> List[Stock]:
+        with self.__db_instance() as session:
+            query: Query = session.query(StockMapper)
+            db_stocks: List[StockMapper] = query.all()
+            stocks: List[Stock] = []
+            for db_stock in db_stocks:
+                stocks.append(
+                    Stock(
+                        stock_id=uuid.UUID(db_stock.id),
+                        symbol=db_stock.symbol,
+                        name=db_stock.name,
+                        currency=db_stock.currency,
+                        exchange=db_stock.exchange,
+                        mic_code=db_stock.mic_code,
+                        country=db_stock.country,
+                        type=db_stock.type,
+                    )
+                )
+        return stocks
+
     async def find_by_id(self, id: int) -> Optional[Stock]:
         pass
 
     async def save(self, stock: Stock) -> None:
         stock_mapper: StockMapper = StockMapper(
-            id=stock.stock_id,
-            symbol=stock.symbol,
-            name=stock.name,
-            currency=stock.currency,
-            exchange=stock.exchange,
-            mic_code=stock.mic_code,
-            country=stock.country,
-            type=stock.type,
+            id=str(stock.stock_id),
+            symbol=str(stock.symbol),
+            name=str(stock.name),
+            currency=str(stock.currency),
+            exchange=str(stock.exchange),
+            mic_code=str(stock.mic_code),
+            country=str(stock.country),
+            type=str(stock.type),
         )
         with self.__db_instance() as session:
             session.add(stock_mapper)
@@ -34,14 +55,14 @@ class SqlalchemyStockRepository(StockRepository):
         stocks_mapped: List[StockMapper] = []
         for stock in stocks:
             stock_mapper: StockMapper = StockMapper(
-                id=stock.stock_id,
-                symbol=stock.symbol,
-                name=stock.name,
-                currency=stock.currency,
-                exchange=stock.exchange,
-                mic_code=stock.mic_code,
-                country=stock.country,
-                type=stock.type,
+                id=str(stock.stock_id),
+                symbol=str(stock.symbol),
+                name=str(stock.name),
+                currency=str(stock.currency),
+                exchange=str(stock.exchange),
+                mic_code=str(stock.mic_code),
+                country=str(stock.country),
+                type=str(stock.type),
             )
             stocks_mapped.append(stock_mapper)
 

@@ -1,23 +1,17 @@
+import pytest
 from unittest.mock import AsyncMock, Mock
 
 from common.infrastructure.client.requests_http_client import RequestsHttpClient
-from test.integration.integration_test_case import IntegrationTestCase
 
 
-class TestIntegrationStocksEndpoints(IntegrationTestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        pass
-
-    def setUp(self) -> None:
-        pass
-
-    def test_get_stocks(self) -> None:
+@pytest.mark.asyncio
+class TestIntegrationStocksEndpoints:
+    async def test_get_stocks(self) -> None:
         response = self.test_client.post("/api/v1/stocks")
 
         assert response.status_code == 201
 
-    def test_get_stocks_with_requests_http_client_mock(self) -> None:
+    async def test_get_stocks_with_requests_http_client_mock(self) -> None:
         response_data = {
             "data": [
                 {

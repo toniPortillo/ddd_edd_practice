@@ -6,6 +6,10 @@ from src.stock.domain.stock import Stock
 
 class StockRepository(ABC):
     @abstractmethod
+    async def find_all(self) -> List[Stock]:
+        pass
+
+    @abstractmethod
     async def find_by_id(self, id: int) -> Optional[Stock]:
         pass
 

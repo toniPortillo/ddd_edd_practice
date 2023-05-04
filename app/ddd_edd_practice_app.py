@@ -6,6 +6,7 @@ from dependency_injector import containers
 
 from app.config.api.api_v1.api import api_router
 from app.config.container_subscriber import container_subscriber
+from app.config.configure_database import configure_database
 
 
 API_V: Final[str] = f"{os.getenv('SUB_PATH', '')}/api/v1"
@@ -18,9 +19,7 @@ tags_metadata: List[Dict[str, Any]] = [
 
 
 async def on_start_up() -> None:
-    db = container_subscriber[0].db()
-    db.create_database()
-
+    configure_database()
 
 async def on_shutdown() -> None:
     containers.unwire()
