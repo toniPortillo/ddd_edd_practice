@@ -59,3 +59,38 @@ class TestIntegrationStocksEndpoints:
 
         assert response.status_code == 201
         assert response.json() == {"stocks_from_api": 2, "saved_stocks": 2}
+
+    async def test_get_stocks_with_sqlalchemy_stock_repository_mock(self) -> None:
+        response_data = {
+            "data": [
+                {
+                    "symbol": "TCS",
+                    "name": "Tata Consultancy Services Limited",
+                    "currency": "INR",
+                    "exchange": "NSE",
+                    "mic_code": "XNSE",
+                    "country": "India",
+                    "type": "Common Stock",
+                    "access": {
+                        "global": "Level A",
+                        "plan": "Grow"
+                    }
+                },
+            ],
+            "status": "ok"
+        }
+
+        mock_response: Mock = Mock()
+        mock_response.json.return_value = response_data
+        requests_http_client_mock = AsyncMock(RequestsHttpClient)
+        requests_http_client_mock.get.return_value = mock_response
+
+        sqlalchemy_stock_repository_mock = AsyncMock(SqlalchemyStockRepository)
+        sqlalchemy_stock_repository_mock.save_many.return_value = 1
+
+        with self.fastapi_app.container[1].requests_http_client.override(requests_http_client_mock), \
+            self.fastapi_app.container[1].sqlalchemy_stock_repository.override(sqlalchemy_stock_repository_mock):
+            response = self.test_client.post("/api/v1/stocks")
+
+        assert response.status_code == 201
+        assert response.json() == {"stocks_from_api": 1, "saved_stocks": 1}

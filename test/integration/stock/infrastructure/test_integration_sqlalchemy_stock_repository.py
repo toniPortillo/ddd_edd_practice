@@ -1,5 +1,4 @@
 import pytest
-from dependency_injector import providers
 
 
 @pytest.mark.asyncio

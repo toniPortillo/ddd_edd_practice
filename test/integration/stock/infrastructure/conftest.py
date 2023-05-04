@@ -6,7 +6,7 @@ from src.stock._dependency_injector.infrastructure.sqlalchemy_stock_repository_c
     SqlalchemyStockRepositoryContainer,
 )
 
-from ..conftest import database_instance
+from test.integration.conftest import database_instance
 
 
 @pytest.fixture(scope="module")
@@ -19,7 +19,7 @@ def sqlalchemy_stock_repository(database_instance):
     yield sqlalchemy_stock_repository_container.sqlalchemy_stock_repository()
 
 @pytest.fixture(scope="module")
-def stock_creator(request):
+def stock_creator():
     stock_creator_container = providers.Container(
         StockCreatorContainer,
     )
