@@ -4,6 +4,7 @@ from src.stock._dependency_injector.infrastructure.sqlalchemy_stock_repository_c
     SqlalchemyStockRepositoryContainer,
 )
 from src.common._dependency_injector.infrastructure.requests_http_client import RequestsHttpClientContainer
+from src.common.infrastructure.client.requests_http_client import RequestsHttpClient
 from src.stock._dependency_injector.domain.stock_creator_container import StockCreatorContainer
 from src.stock.application.create_stock_command_handler import CreateStockCommandHandler
 from src.stock.infrastructure.api.controller.stock_json_schema_validator import StockJsonSchemaValidator
@@ -27,9 +28,9 @@ class StockEndpointsContainer(containers.DeclarativeContainer):
         RequestsSessionContainer,
     )
 
-    requests_http_client_container = providers.Container(
-        RequestsHttpClientContainer,
-        requests_session=session_requests_container.requests_session,
+    requests_http_client = providers.Factory(
+        RequestsHttpClient,
+        session_requests=session_requests_container.requests_session,
         url=config.api.url,
     )
 
@@ -41,6 +42,6 @@ class StockEndpointsContainer(containers.DeclarativeContainer):
         CreateStockCommandHandler,
         stock_repository=sqlalchemy_stock_repository_container.sqlalchemy_stock_repository,
         stock_creator=stock_creator_container.stock_creator,
-        requests_http_client=requests_http_client_container.requests_http_client,
+        requests_http_client=requests_http_client,
         stock_json_schema_validator=stock_json_schema_validator,
     )
