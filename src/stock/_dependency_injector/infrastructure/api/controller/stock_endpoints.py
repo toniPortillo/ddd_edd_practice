@@ -16,12 +16,7 @@ class StockEndpointsContainer(containers.DeclarativeContainer):
     config = providers.Configuration(yaml_files=["config.yml"])
 
     db_session = providers.Dependency()
-    """
-    sqlalchemy_stock_repository_container = providers.Container(
-        SqlalchemyStockRepositoryContainer,
-        db_instance=db_session,
-    )
-    """
+
     sqlalchemy_stock_repository = providers.Singleton(
         SqlalchemyStockRepository,
         db_instance=db_session,
