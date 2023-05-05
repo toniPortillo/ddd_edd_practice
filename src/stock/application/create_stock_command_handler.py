@@ -28,8 +28,8 @@ class CreateStockCommandHandler:
     ) -> Dict:
         stock_response: Response = await self.__requests_http_client.get("/stocks")
         stock_list: Dict = stock_response.json()
-        stocks_from_api: int = len(stock_list["data"])
         await self.__stock_json_schema_validator.validate(stock_list)
+        stocks_from_api: int = len(stock_list["data"])
 
         stocks: List[Stock] = []
         for stock in stock_list["data"]:
