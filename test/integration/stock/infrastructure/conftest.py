@@ -17,11 +17,3 @@ def sqlalchemy_stock_repository(database_instance):
     )
     
     yield sqlalchemy_stock_repository_container.sqlalchemy_stock_repository()
-
-@pytest.fixture(scope="module")
-def stock_creator():
-    stock_creator_container = providers.Container(
-        StockCreatorContainer,
-    )
-
-    yield stock_creator_container.stock_creator()

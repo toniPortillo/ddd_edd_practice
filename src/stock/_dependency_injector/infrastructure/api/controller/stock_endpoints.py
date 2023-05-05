@@ -1,9 +1,6 @@
 from dependency_injector import containers, providers
 
 from src.common._dependency_injector.infrastructure.requests_session import RequestsSessionContainer
-from src.stock._dependency_injector.infrastructure.sqlalchemy_stock_repository_container import (
-    SqlalchemyStockRepositoryContainer,
-)
 from src.common.infrastructure.client.requests_http_client import RequestsHttpClient
 from src.stock._dependency_injector.domain.stock_creator_container import StockCreatorContainer
 from stock.infrastructure.sqlalchemy_stock_repository import SqlalchemyStockRepository
