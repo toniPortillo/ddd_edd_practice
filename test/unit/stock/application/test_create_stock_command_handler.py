@@ -91,7 +91,6 @@ class TestCreateStockCommandHandler:
         result = await self.command_handler.handle()
         assert result == {"stocks_from_api": 0, "saved_stocks": 0}
 
-""" # we need to improve the command handler this test give us a problem
     @pytest.mark.asyncio
     async def test_handle_with_invalid_json_schema(self) -> None:
         response_data = {
@@ -108,4 +107,3 @@ class TestCreateStockCommandHandler:
         with pytest.raises(jsonschema.exceptions.ValidationError) as exception_info:
             await self.command_handler.handle()
             assert exception_info == "The json schema is not valid"
-"""

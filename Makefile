@@ -36,7 +36,7 @@ unit_test_coverage: ## Run coverage
 
 integration_test_coverage: ## Run coverage
 	@echo 'Running coverage ...'
-	@docker-compose run --rm api pipenv run tox -e integration_coverage
+	@docker-compose run --rm api pipenv run tox -e integration_test_coverage
 	@echo 'Coverage run finished'
 
 migration_upgrade: ## Run migration upgrade
