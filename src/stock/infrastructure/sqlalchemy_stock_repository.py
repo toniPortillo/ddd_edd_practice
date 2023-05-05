@@ -1,4 +1,4 @@
-import uuid
+from uuid import UUID
 from typing import List, Optional, Callable, ContextManager
 
 from src.stock.domain.stock import Stock
@@ -20,7 +20,7 @@ class SqlalchemyStockRepository(StockRepository):
             for db_stock in db_stocks:
                 stocks.append(
                     Stock(
-                        stock_id=uuid.UUID(db_stock.id),
+                        stock_id=UUID(db_stock.id),
                         symbol=db_stock.symbol,
                         name=db_stock.name,
                         currency=db_stock.currency,
@@ -32,8 +32,22 @@ class SqlalchemyStockRepository(StockRepository):
                 )
         return stocks
 
-    async def find_by_id(self, id: int) -> Optional[Stock]:
-        pass
+    async def find_by_id(self, id: UUID) -> Optional[Stock]:
+        with self.__db_instance() as session:
+            db_stock: Optional[StockMapper] = session.query(StockMapper).get(str(id))
+            if db_stock is not None:
+                stock: Stock = Stock(
+                    stock_id=UUID(db_stock.id),
+                    symbol=db_stock.symbol,
+                    name=db_stock.name,
+                    currency=db_stock.currency,
+                    exchange=db_stock.exchange,
+                    mic_code=db_stock.mic_code,
+                    country=db_stock.country,
+                    type=db_stock.type,
+                )
+
+        return stock
 
     async def save(self, stock: Stock) -> None:
         stock_mapper: StockMapper = StockMapper(
