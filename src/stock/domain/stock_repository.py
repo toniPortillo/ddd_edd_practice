@@ -1,3 +1,4 @@
+from uuid import UUID
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
@@ -10,7 +11,7 @@ class StockRepository(ABC):
         pass
 
     @abstractmethod
-    async def find_by_id(self, id: int) -> Optional[Stock]:
+    async def find_by_id(self, id: UUID) -> Optional[Stock]:
         pass
 
     @abstractmethod
