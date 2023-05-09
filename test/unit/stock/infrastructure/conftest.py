@@ -18,3 +18,4 @@ def query_mock():
 @pytest.fixture(scope="function")
 def db_instance_session():
     yield DbInstanceMock
+    DbInstanceMock.session_mock.reset_mock()

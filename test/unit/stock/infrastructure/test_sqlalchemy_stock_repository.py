@@ -194,7 +194,7 @@ class TestSqlAlchemyStockRepository:
             stock_mapper_fakes.append(stock_mapper_fake)
 
         mocker.patch('src.stock.infrastructure.sqlalchemy_stock_repository.StockMapper', side_effect=stock_mapper_fakes)
-        db_instance_session.session_mock.reset_mock()
+
         sqlalchemy_stock_repository = SqlalchemyStockRepository(db_instance=db_instance_session)
         stocks_saved: int = await sqlalchemy_stock_repository.save_many(stocks=stocks_fake)
 
