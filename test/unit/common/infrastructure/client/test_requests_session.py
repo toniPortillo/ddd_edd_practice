@@ -12,9 +12,6 @@ class TestRequestsSession:
         session_mock.mount.return_value = None
         session_mock.request.return_value = response_mock
 
-        mocker.patch('src.common.infrastructure.client.requests_session.Session', return_value=session_mock)
-        mocker.patch('src.common.infrastructure.client.requests_session.Retry', return_value=retry_mock)
-        mocker.patch('src.common.infrastructure.client.requests_session.HTTPAdapter', return_value=http_adapter_mock)
         fake_url: str = "https://fake-url.com/stocks"
 
         # Act
@@ -39,9 +36,6 @@ class TestRequestsSession:
         session_mock.mount.return_value = None
         session_mock.request.return_value = response_mock
 
-        mocker.patch('src.common.infrastructure.client.requests_session.Session', return_value=session_mock)
-        mocker.patch('src.common.infrastructure.client.requests_session.Retry', return_value=retry_mock)
-        mocker.patch('src.common.infrastructure.client.requests_session.HTTPAdapter', return_value=http_adapter_mock)
         fake_url: str = "https://fake-url.com/stocks"
 
         # Act
@@ -55,6 +49,7 @@ class TestRequestsSession:
             **kwargs,
         )
 
+        # Assert
         assert response_mock.status_code == 200
         assert response_mock.json() == {"data": []}
         assert session_mock.mount.called_once_with(fake_url, http_adapter_mock)
