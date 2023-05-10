@@ -31,15 +31,15 @@ class TestStockJsonSchemaValidator:
             ],
             "status": "ok"
         }
+        mocker.patch('src.stock.infrastructure.api.controller.stock_json_schema_validator.jsonschema.validate')
 
         # Act
         stock_json_schema_validator = StockJsonSchemaValidator()
+        response = await stock_json_schema_validator.validate(stock_json_fake)
 
         # Assert
-        with mocker.patch('src.stock.infrastructure.api.controller.stock_json_schema_validator.jsonschema.validate'):
-            response = await stock_json_schema_validator.validate(stock_json_fake)
-            jsonschema.validate.assert_called_once_with(instance=stock_json_fake, schema=stock_json_schema_validator.stock_json_schema)
-            assert response is None
+        assert response is None
+        jsonschema.validate.assert_called_once_with(instance=stock_json_fake, schema=stock_json_schema_validator.stock_json_schema)
 
     async def test_validate_validation_exception(self):
         # Arrange
