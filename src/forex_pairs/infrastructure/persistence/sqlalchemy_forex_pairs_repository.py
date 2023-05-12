@@ -20,14 +20,21 @@ class SqlalchemyForexPairsRepository(ForexPairsRepository):
             session.commit()
             return len(forex_pairs_mapped)
 
+    async def find_all(self) -> List[ForexPairs]:
+        with self.__db_instance() as session:
+            query = session.query(ForexPairsMapper)
+            forex_pairs_mapped: List[ForexPairsMapper] = query.all()
+            forex_pairs_list: List[ForexPairs] = await self.__mappers_to_domain(forex_pairs_mapped)
+            return forex_pairs_list
+
     async def __mappers_to_domain(self, forex_pairs_mappers: List[ForexPairsMapper]) -> List[ForexPairs]:
         forex_pairs_list: Iterable[ForexPairs] = map(
-            lambda forex_pair_mapper: ForexPairs(
-                forex_pairs_id=UUID(forex_pair_mapper.id),
-                symbol=forex_pair_mapper.symbol,
-                currency_group=forex_pair_mapper.currency_group,
-                currency_base=forex_pair_mapper.currency_base,
-                currency_quote=forex_pair_mapper.currency_quote,
+            lambda forex_pairs_mapper: ForexPairs(
+                forex_pairs_id=UUID(forex_pairs_mapper.id),
+                symbol=forex_pairs_mapper.symbol,
+                currency_group=forex_pairs_mapper.currency_group,
+                currency_base=forex_pairs_mapper.currency_base,
+                currency_quote=forex_pairs_mapper.currency_quote,
             ),
             forex_pairs_mappers,
         )
@@ -36,12 +43,12 @@ class SqlalchemyForexPairsRepository(ForexPairsRepository):
 
     async def __domain_to_mappers(self, forex_pairs_list: List[ForexPairs]) -> List[ForexPairsMapper]:
         forex_pairs_mappers: Iterable[ForexPairsMapper] = map(
-            lambda forex_pair: ForexPairsMapper(
-                id=str(forex_pair.forex_pairs_id),
-                symbol=forex_pair.symbol,
-                currency_group=forex_pair.currency_group,
-                currency_base=forex_pair.currency_base,
-                currency_quote=forex_pair.currency_quote,
+            lambda forex_pairs: ForexPairsMapper(
+                id=str(forex_pairs.forex_pairs_id),
+                symbol=forex_pairs.symbol,
+                currency_group=forex_pairs.currency_group,
+                currency_base=forex_pairs.currency_base,
+                currency_quote=forex_pairs.currency_quote,
             ),
             forex_pairs_list,
         )
