@@ -2,7 +2,7 @@ from contextlib import contextmanager
 from typing import Callable, ContextManager
 import logging
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, Session
 
@@ -21,12 +21,17 @@ class Database:
                 bind=self.__engine
             ),
         )
+        self.__metadata = MetaData(bind=self.__engine)
 
     def create_database(self) -> None:
-        Base.metadata.create_all(self.__engine)
+        self.__metadata.create_all(self.__engine)
 
     def drop_database(self) -> None:
-        Base.metadata.drop_all(self.__engine)
+        self.__metadata.drop_all(self.__engine)
+
+    @property
+    def metadata(self) -> MetaData:
+        return self.__metadata
 
     @contextmanager
     def session(self) -> Callable[..., ContextManager[Session]]:
