@@ -5,7 +5,7 @@ from src.stock.domain.stock import Stock
 from src.stock.domain.stock_repository import StockRepository
 
 from sqlalchemy.orm import Session, Query
-from src.stock.infrastructure.stock_mapper import StockMapper
+from src.stock.infrastructure.persistence.stock_mapper import StockMapper
 
 
 class SqlalchemyStockRepository(StockRepository):
