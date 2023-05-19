@@ -1,8 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
 from dependency_injector import providers
-from sqlalchemy.orm import close_all_sessions
+from sqlalchemy.orm import close_all_sessions, clear_mappers, registry
 
+from app.config.mapper_subscriber import mapper_subscriber
 from app.ddd_edd_practice_app import create_app
 from test.integration.config.database_container import DatabaseContainer
 
@@ -18,7 +19,19 @@ def database_instance(fastapi_app):
         DatabaseContainer,
     )
     fastapi_app.container[0].override(database_container)
-    yield database_container.db()
+    database_instance = database_container.db()
+    
+    clear_mappers()
+    mapper_registry = registry()
+    
+    mappers = mapper_subscriber(database_instance)
+    for mapper in mappers:
+        mapper_registry.map_imperatively(
+            mapper.entity(), 
+            mapper.table()
+        )
+
+    yield database_instance
 
 
 @pytest.fixture(scope="session")

@@ -8,7 +8,7 @@ class StockCreator:
         self, symbol: str, name: str, currency: str, exchange: str, mic_code: str, country: str, type: str
     ) -> Stock:
         stock: Stock = Stock(
-            stock_id=uuid4(),
+            id=uuid4(),
             symbol=symbol,
             name=name,
             currency=currency,
