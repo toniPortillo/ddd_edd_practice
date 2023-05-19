@@ -38,7 +38,7 @@ class TestSqlAlchemyStockRepository:
         for stock_mapper_fake in fake_query_result:
             stocks_fake.append(
                 Stock(
-                    stock_id=UUID(stock_mapper_fake['id']),
+                    id=UUID(stock_mapper_fake['id']),
                     symbol=stock_mapper_fake['symbol'],
                     name=stock_mapper_fake['name'],
                     currency=stock_mapper_fake['currency'],
@@ -70,7 +70,7 @@ class TestSqlAlchemyStockRepository:
         }
 
         stock_fake: Stock = Stock(
-            stock_id=UUID(fake_query_result['id']),
+            id=UUID(fake_query_result['id']),
             symbol=fake_query_result['symbol'],
             name=fake_query_result['name'],
             currency=fake_query_result['currency'],
@@ -83,13 +83,13 @@ class TestSqlAlchemyStockRepository:
         query_mock.get.return_value = stock_fake
         db_instance_session.session_mock.query.return_value = query_mock
         sqlalchemy_stock_repository = SqlalchemyStockRepository(db_instance=db_instance_session)
-        stock = await sqlalchemy_stock_repository.find_by_id(id=stock_fake.stock_id)
+        stock = await sqlalchemy_stock_repository.find_by_id(id=stock_fake.id)
 
         assert stock == stock_fake
 
     async def test_save(self, mocker, db_instance_session):
         stock_fake: Stock = Stock(
-            stock_id=UUID("123e4567-e89b-12d3-a456-426655440000"),
+            id=UUID("123e4567-e89b-12d3-a456-426655440000"),
             symbol="AAPL",
             name="Apple Inc.",
             currency="USD",
@@ -134,7 +134,7 @@ class TestSqlAlchemyStockRepository:
         for fake_result in fake_query_result:
             stocks_fake.append(
                 Stock(
-                    stock_id=UUID(fake_result["id"]),
+                    id=UUID(fake_result["id"]),
                     symbol=fake_result["symbol"],
                     name=fake_result["name"],
                     currency=fake_result["currency"],

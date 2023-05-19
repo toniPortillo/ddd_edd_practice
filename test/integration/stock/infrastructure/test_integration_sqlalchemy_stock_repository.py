@@ -19,6 +19,6 @@ class TestIntegrationSqlAlchemyStockRepository():
     async def test_save(self, sqlalchemy_stock_repository):
         stock: Stock = StockMother.apple_stock()
         await sqlalchemy_stock_repository.save(stock)
-        db_stock: Stock = await sqlalchemy_stock_repository.find_by_id(stock.stock_id)
+        db_stock: Stock = await sqlalchemy_stock_repository.find_by_id(stock.id)
 
         assert stock == db_stock

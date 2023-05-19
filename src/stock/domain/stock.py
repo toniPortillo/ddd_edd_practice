@@ -4,7 +4,7 @@ import uuid
 
 @dataclass
 class Stock:
-    stock_id: uuid.UUID
+    id: uuid.UUID
     symbol: str
     name: str
     currency: str

@@ -8,15 +8,13 @@ from sqlalchemy.orm import scoped_session, sessionmaker, Session
 
 logger = logging.getLogger(__name__)
 
-Base = declarative_base()
-
-
 class Database:
     def __init__(self, db_url: str) -> None:
         self.__engine = create_engine(db_url, echo=True)
         self.__session_factory = scoped_session(
             sessionmaker(
                 autocommit=False,
+                expire_on_commit=False,
                 autoflush=False,
                 bind=self.__engine
             ),
