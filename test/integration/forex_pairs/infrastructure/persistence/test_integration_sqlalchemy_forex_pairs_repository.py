@@ -7,7 +7,6 @@ from src.forex_pairs.domain.forex_pairs import ForexPairs
 from test.mothers.forex_pairs.forex_pairs_mother import ForexPairsMother
 
 
-"""
 @pytest.mark.asyncio
 class TestIntegrationSqlalchemyForexPairsRepository:
     async def test_save_many(self, database_instance , sqlalchemy_forex_pairs_repository):
@@ -34,4 +33,3 @@ class TestIntegrationSqlalchemyForexPairsRepository:
         forex_pairs_saved: List[ForexPairs] = await sqlalchemy_forex_pairs_repository.find_all()
         
         assert len(forex_pairs_saved) == 2
-"""
