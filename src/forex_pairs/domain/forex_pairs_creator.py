@@ -13,7 +13,7 @@ class ForexPairsCreator:
         currency_quote: str,
     ) -> ForexPairs:
         return ForexPairs(
-            forex_pairs_id=uuid4(),
+            id=uuid4(),
             symbol=symbol,
             currency_group=currency_group,
             currency_base=currency_base,

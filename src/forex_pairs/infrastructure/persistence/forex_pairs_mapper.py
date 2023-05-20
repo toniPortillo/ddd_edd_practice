@@ -19,6 +19,7 @@ class ForexPairsMapper(Mapper):
                 Column("symbol", String(), nullable=False),
                 Column("currency_group", String(), nullable=False),
                 Column("currency_base", String(), nullable=False),
+                Column("currency_quote", String(), nullable=False),
             )
 
         return self.__table

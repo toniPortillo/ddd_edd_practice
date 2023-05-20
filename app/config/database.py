@@ -3,7 +3,6 @@ from typing import Callable, ContextManager
 import logging
 
 from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, Session
 
 logger = logging.getLogger(__name__)

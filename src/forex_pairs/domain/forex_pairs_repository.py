@@ -8,3 +8,7 @@ class ForexPairsRepository(ABC):
     @abstractmethod
     async def save_many(self, forex_pairs: List[ForexPairs]) -> int:
         ...
+
+    @abstractmethod
+    async def find_all(self) -> List[ForexPairs]:
+        ...
