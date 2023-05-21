@@ -21,15 +21,7 @@ def database_instance(fastapi_app):
     fastapi_app.container[0].override(database_container)
     database_instance = database_container.db()
     
-    clear_mappers()
-    mapper_registry = registry()
-    
-    mappers = mapper_subscriber(database_instance)
-    for mapper in mappers:
-        mapper_registry.map_imperatively(
-            mapper.entity(), 
-            mapper.table()
-        )
+    mapper_subscriber(database_instance)
 
     yield database_instance
 
