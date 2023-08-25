@@ -1,9 +1,9 @@
-from typing import List
 import pytest
 
 from src.forex_pairs.infrastructure.persistence.sqlalchemy_forex_pairs_repository import (
     SqlalchemyForexPairsRepository,
 )
+
 
 @pytest.fixture(scope="module")
 def sqlalchemy_forex_pairs_repository(database_instance):

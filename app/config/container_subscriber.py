@@ -1,3 +1,5 @@
+import os
+
 from typing import List
 from dependency_injector import providers
 
@@ -8,10 +10,12 @@ from src.stock._dependency_injector.infrastructure.api.controller.stock_endpoint
 application_container = providers.Container(
     ApplicationContainer,
 )
+
 stock_endpoints_container = providers.Container(
     StockEndpointsContainer,
     db_session=application_container.db.provided.session,
 )
+
 container_subscriber: List = [
     application_container,
     stock_endpoints_container,

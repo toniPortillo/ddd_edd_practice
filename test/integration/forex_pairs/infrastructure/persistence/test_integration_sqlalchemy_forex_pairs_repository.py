@@ -1,9 +1,8 @@
 from typing import List
 
 import pytest
-from sqlalchemy.orm import Query
 
-from src.forex_pairs.domain.forex_pairs import ForexPairs
+from forex_pairs.domain.forex_pairs import ForexPairs
 from test.mothers.forex_pairs.forex_pairs_mother import ForexPairsMother
 
 

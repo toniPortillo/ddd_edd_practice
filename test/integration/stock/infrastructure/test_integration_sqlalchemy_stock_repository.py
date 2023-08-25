@@ -1,7 +1,7 @@
 from typing import List
 import pytest
-from stock.domain.stock import Stock
 
+from stock.domain.stock import Stock
 from test.mothers.stock.stock_mother import StockMother
 
 @pytest.mark.asyncio

@@ -1,11 +1,11 @@
-from uuid import UUID
+import uuid
 
 from dataclasses import dataclass
 
 
 @dataclass
 class ForexPairs:
-    id: UUID
+    id: uuid.UUID
     symbol: str
     currency_group: str
     currency_base: str

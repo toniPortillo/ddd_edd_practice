@@ -8,21 +8,18 @@ from src.forex_pairs.domain.forex_pairs import ForexPairs
 
 
 class ForexPairsMapper(Mapper):
-    __table = None
-
     def table(self) -> Table:
-        if self.__table is None:
-            self.__table = Table(
-                "forex_pairs",
-                self._db_instance.metadata,
-                Column("id", UUID(as_uuid=False), primary_key=True, nullable=False),
-                Column("symbol", String(), nullable=False),
-                Column("currency_group", String(), nullable=False),
-                Column("currency_base", String(), nullable=False),
-                Column("currency_quote", String(), nullable=False),
-            )
+        forex_pairs_table = Table(
+            "forex_pairs",
+            self._db_instance.metadata,
+            Column("id", UUID(as_uuid=True), primary_key=True, nullable=False),
+            Column("symbol", String(), nullable=False),
+            Column("currency_group", String(), nullable=False),
+            Column("currency_base", String(), nullable=False),
+            Column("currency_quote", String(), nullable=False),
+        )
 
-        return self.__table
+        return forex_pairs_table
 
     def entity(self) -> Type:
         return ForexPairs
